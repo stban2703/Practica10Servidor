@@ -40,6 +40,7 @@ public class Main extends PApplet implements OnMessageListener {
 			String cedula = datos[2];
 
 			listaRegistro.add(new Registro(nombre, cedula));
+			//System.out.println(listaRegistro.get(0).getNombre());
 		}
 
 		if (mensaje.startsWith("list")) {

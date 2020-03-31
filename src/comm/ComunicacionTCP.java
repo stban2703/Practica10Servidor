@@ -71,7 +71,7 @@ public class ComunicacionTCP extends Thread {
 	// Recibir mensaje
 	public void recibirMensaje() throws IOException {
 		String line = reader.readLine();
-		System.out.println(line);
+		//System.out.println(line);
 		if (observer != null)
 			observer.onMessage(line);
 	}
