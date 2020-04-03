@@ -9,6 +9,10 @@ public class Registro {
 		this.nombre = nombre;
 		this.cedula = cedula;
 	}
+	
+	public Registro() {
+		
+	}
 
 	public String getNombre() {
 		return nombre;

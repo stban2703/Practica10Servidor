@@ -2,6 +2,8 @@ package main;
 
 import java.util.ArrayList;
 
+import com.google.gson.Gson;
+
 import comm.ComunicacionTCP;
 import comm.ComunicacionTCP.OnMessageListener;
 import processing.core.PApplet;
@@ -17,6 +19,7 @@ public class Main extends PApplet implements OnMessageListener {
 
 	public void settings() {
 		size(500, 500);
+
 	}
 
 	public void setup() {
@@ -29,26 +32,30 @@ public class Main extends PApplet implements OnMessageListener {
 
 	public void draw() {
 		background(0);
+
 	}
 
 	@Override
-	public void onMessage(String mensaje) {
-		// TODO Auto-generated method stub
-		if (mensaje.startsWith("reg")) {
-			String[] datos = mensaje.split(",");
-			String nombre = datos[1];
-			String cedula = datos[2];
+	public void onMessage(String json) {
 
-			listaRegistro.add(new Registro(nombre, cedula));
-			//System.out.println(listaRegistro.get(0).getNombre());
+		// Recibir nuevos registros
+		if (json.startsWith("{")) {
+
+			Gson gson = new Gson();
+			Registro registro = gson.fromJson(json, Registro.class);
+
+			listaRegistro.add(registro);
+			
 		}
 
-		if (mensaje.startsWith("list")) {
-			for (int i = 0; i < listaRegistro.size(); i++) {
-				String nombre = listaRegistro.get(i).getNombre();
-				String cedula = listaRegistro.get(i).getCedula();
-				comunicacionTCP.mandarMensaje(nombre + "," + cedula);
-			}
+		// Enviar lista a Android
+		if (json.startsWith("list")) {
+			
+			Gson gson = new Gson();
+			String registros = gson.toJson(listaRegistro);
+
+			comunicacionTCP.mandarMensaje(registros);
+
 		}
 
 	}
